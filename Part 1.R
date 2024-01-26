@@ -50,3 +50,21 @@ clean_sales$Profit <- (clean_sales$Profit - min(clean_sales$Profit)) / (max(clea
 sample <- sample(c(TRUE, FALSE), nrow(clean_sales), replace=TRUE, prob=c(0.7,0.3))
 train_sales  <- clean_sales[sample, ]
 test_sales   <- clean_sales[!sample, ]
+
+# Convert the target variable (Segment) to a factor
+train_sales$Segment <- as.factor(train_sales$Segment)
+test_sales$Segment <- as.factor(test_sales$Segment)
+
+# Build the Naive Bayes model
+naive_bayes_model <- naiveBayes(Segment ~ ., data = train_sales)
+
+# Print the summary of the model
+print(naive_bayes_model)
+
+# Make predictions on the test set
+predictions <- predict(naive_bayes_model, newdata = test_sales)
+
+# Evaluate the model performance
+conf_matrix <- table(predictions, test_sales$Segment)
+accuracy <- sum(diag(conf_matrix))/sum(conf_matrix)
+cat("Accuracy:", accuracy, "\n")
