@@ -6,25 +6,25 @@ library("readxl")
 setwd("C:/Users/Sofea Taufik/Documents/Y3S1/CPC351/Project")
 
 # load dataset
-df <- read_excel("Electronic-store-sales-details.xls")
+sales <- read_excel("Electronic-store-sales-details.xls")
 
-# converting the attributes to categorical
-df$`Order ID` <- factor(df$`Order ID`)
-df$`Ship Mode` <- factor(df$`Ship Mode`)
-df$`Customer ID` <- factor(df$`Customer ID`)
-df$`Customer Name` <- factor(df$`Customer Name`)
-df$Segment <- factor(df$Segment)
-df$Country <- factor(df$Country)
-df$City <- factor(df$City)
-df$State <- factor(df$State)
-df$Region <- factor(df$Region)
-df$`Product ID` <- factor(df$`Product ID`)
-df$Category <- factor(df$Category)
-df$`Sub-Category` <- factor(df$`Sub-Category`)
-df$`Product Name` <- factor(df$`Product Name`)
+# Converting the attributes to categorical
+sales$`Order ID` <- factor(sales$`Order ID`)
+sales$`Ship Mode` <- factor(sales$`Ship Mode`)
+sales$`Customer ID` <- factor(sales$`Customer ID`)
+sales$`Customer Name` <- factor(sales$`Customer Name`)
+sales$Segment <- factor(sales$Segment)
+sales$Country <- factor(sales$Country)
+sales$City <- factor(sales$City)
+sales$State <- factor(sales$State)
+sales$Region <- factor(sales$Region)
+sales$`Product ID` <- factor(sales$`Product ID`)
+sales$Category <- factor(sales$Category)
+sales$`Sub-Category` <- factor(sales$`Sub-Category`)
+sales$`Product Name` <- factor(sales$`Product Name`)
 
 # getting the values in attribute segment
-summary(df$Segment)
+summary(sales$Segment)
 
 # Data preparation
 
