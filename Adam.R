@@ -8,7 +8,7 @@ library(caret)
 setwd("C:/Users/Acer/Dropbox/PC/Desktop/CPC351/project")
 
 # load dataset
-sales<- read_excel("Electronic-store-sales-details.xls")
+sales <- read_excel("Electronic-store-sales-details.xls")
 
 # Converting the attributes to categorical
 sales$`Order ID` <- factor(sales$`Order ID`)
@@ -39,25 +39,34 @@ duplicate_indices <- which(duplicated(sales))
 # View duplicate rows
 duplicate_rows <- sales[duplicate_indices, ] # no duplicate rows
 
-# Drop multiple unimportant columns
-clean_sales <- sales %>% select(-c(`Row ID`,`Customer ID`, Country, `Order Date`, `Ship Mode`, `Product ID`, Quantity, Discount, Profit))
+# Remove Row ID attribute because Order ID is already unique
+clean_sales <- sales[, !(names(sales) %in% c("Row ID"))]
 
 # Performing data normalisation for scale consistency
 # Using range normalization
 clean_sales$Sales <- (clean_sales$Sales - min(clean_sales$Sales)) / (max(clean_sales$Sales) - min(clean_sales$Sales))
-#clean_sales$Quantity <- (clean_sales$Quantity - min(clean_sales$Quantity)) / (max(clean_sales$Quantity) - min(clean_sales$Quantity))
-#clean_sales$Profit <- (clean_sales$Profit - min(clean_sales$Profit)) / (max(clean_sales$Profit) - min(clean_sales$Profit))
+clean_sales$Quantity <- (clean_sales$Quantity - min(clean_sales$Quantity)) / (max(clean_sales$Quantity) - min(clean_sales$Quantity))
+clean_sales$Profit <- (clean_sales$Profit - min(clean_sales$Profit)) / (max(clean_sales$Profit) - min(clean_sales$Profit))
+
+# Perform feature selection using chi-square test
+chi_sq_results <- sapply(clean_sales[, -which(names(clean_sales) == "Segment")], function(x) {
+  chisq.test(table(x, clean_sales$Segment))$p.value
+})
+
+# Select features based on a threshold (e.g., p-value < 0.05)
+selected_features <- names(chi_sq_results)[chi_sq_results < 0.05]
+
+# Keep selected features along with the target variable
+selected_sales <- clean_sales[, c(selected_features, "Segment")]
 
 # Splitting data set train-test
-sample <- sample(c(TRUE, FALSE), nrow(clean_sales), replace=TRUE, prob=c(0.7,0.3))
-train_sales  <- clean_sales[sample, ]
-test_sales   <- clean_sales[!sample, ]
+sample <- sample(c(TRUE, FALSE), nrow(selected_sales), replace = TRUE, prob = c(0.7, 0.3))
+train_sales <- selected_sales[sample, ]
+test_sales <- selected_sales[!sample, ]
 
 # Convert the target variable (Segment) to a factor
 train_sales$Segment <- as.factor(train_sales$Segment)
 test_sales$Segment <- as.factor(test_sales$Segment)
-
-
 
 # Build the Naive Bayes model
 naive_bayes_model <- naiveBayes(Segment ~ ., data = train_sales)
@@ -79,4 +88,3 @@ confusionMatrix_plot <- confusionMatrix(conf_matrix, reference = test_sales$Segm
 
 # Display the plot
 print(confusionMatrix_plot)
-
