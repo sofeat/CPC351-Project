@@ -155,7 +155,7 @@ linear_model9 <- lm(formula = myr_usd ~ myr_sgd + myr_eur + myr_twd + myr_hkd + 
                       myr_bdt + myr_chf + myr_cad, data = train)
 summary(linear_model9)
 
-# linear_model6 already contains all significant features with threshold of 0.05
+# linear_model9 already contains all significant features with threshold of 0.05
 # Continue to remove features until 0.001 is achieved
 
 # Remove the highest p-value non-significant feature (myr_twd)
