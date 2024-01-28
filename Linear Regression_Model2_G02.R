@@ -96,15 +96,14 @@ pairs(normalized_exchange[c("myr_usd", "myr_chf", "myr_cad", "myr_rub")],
       main = "Scatterplot Matrix: Key Features (Set 6)",
       pch = 16, col = "orange")
 
-# Section III: Model Planning and Development ====
-set.seed(123)
 # Split the dataset into training and test sets
+set.seed(123)
 sample <- sample(c(TRUE, FALSE), nrow(normalized_exchange), replace=TRUE, prob=c(0.7, 0.3))
 train <- normalized_exchange[sample, ]
 test <- normalized_exchange[!sample, ]
 
 # Feature Selection ====
-# By removing highest p-value at each iteration to find the best features set
+# Removing highest p-value at each iteration to find the best features set
 
 # Fit multiple linear regression models
 linear_model1 <- lm(formula = myr_usd ~ myr_rmb + myr_sgd + myr_eur + myr_jpy + myr_twd + myr_thb + myr_idr + myr_hkd + myr_krw +
