@@ -1,3 +1,5 @@
+# Section I: Discovery ====
+
 # Package to read xls
 library(dplyr)
 library("readxl")
@@ -34,7 +36,7 @@ summary(sales$Segment)
   # Multi-class classification 
   # (3; consumer, corporate, home office)
 
-
+# Section II: Data Preparation ====
 
 # Data preparation
 
@@ -59,10 +61,9 @@ clean_sales$Profit <- (clean_sales$Profit - min(clean_sales$Profit)) / (max(clea
 # View summary of data frame
 summary(clean_sales)
 
-
-
 # Training the model
 
+# Feature Selection ====
 # Perform feature selection using chi-square test
 chi_sq_results <- sapply(clean_sales[, -which(names(clean_sales) == "Segment")], function(x) {
   chisq.test(table(x, clean_sales$Segment))$p.value
@@ -94,11 +95,15 @@ sample <- sample(c(TRUE, FALSE), nrow(selected_sales), replace = TRUE, prob = c(
 train_sales <- selected_sales[sample, ]
 test_sales <- selected_sales[!sample, ]
 
+# Section III: Model Planning and Development ====
+
 # Build the Naive Bayes model
 naive_bayes_model <- naiveBayes(Segment ~ ., data = train_sales)
 
 # Print the summary of the model
 print(naive_bayes_model)
+
+# Section IV: Model Evaluation ====
 
 # Make predictions on the test set
 predictions <- predict(naive_bayes_model, newdata = test_sales)
