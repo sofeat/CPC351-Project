@@ -96,6 +96,11 @@ pairs(normalized_exchange[c("myr_usd", "myr_chf", "myr_cad", "myr_rub")],
       main = "Scatterplot Matrix: Key Features (Set 6)",
       pch = 16, col = "orange")
 
+# Scatterplot Matrix of Response Variable and Input Variables with Linear Trends
+pairs(normalized_exchange[c("myr_usd", "myr_sar", "myr_aed", "myr_hkd")], 
+      main = "Scatterplot Matrix: Output Variable and Input Variable (Linear Trend)",
+      pch = 16, col = "black")
+
 # Split the dataset into training and test sets
 set.seed(123)
 sample <- sample(c(TRUE, FALSE), nrow(normalized_exchange), replace=TRUE, prob=c(0.7, 0.3))
