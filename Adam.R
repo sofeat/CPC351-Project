@@ -3,6 +3,7 @@ library(dplyr)
 library("readxl")
 library(e1071)
 library(caret)
+library(ggplot2)
 
 # set working directory
 setwd("C:/Users/Acer/Dropbox/PC/Desktop/CPC351/project")
@@ -88,3 +89,22 @@ confusionMatrix_plot <- confusionMatrix(conf_matrix, reference = test_sales$Segm
 
 # Display the plot
 print(confusionMatrix_plot)
+
+# Display summary statistics for numerical variables
+summary(sales[, sapply(sales, is.numeric)])
+
+# Display summary for categorical variables
+sapply(sales[, !sapply(sales, is.numeric)], function(x) table(x))
+
+# Plot bar plot of Segment
+ggplot(sales, aes(x = Segment)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  labs(title = "Bar Plot of Segment", x = "Segment", y = "Count") +
+  theme_minimal()
+
+# Plot bar plot of Category
+ggplot(sales, aes(x = Category)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  labs(title = "Bar Plot of Category", x = "Category", y = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
