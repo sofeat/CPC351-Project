@@ -176,7 +176,7 @@ mod.names <- c('Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5', 'Model 6',
 #calculate AIC of each model
 aictab(cand.set = models, modnames = mod.names)
 
-# The best model based on AIC is: Model 5 with 21 features
+# The best model based on AIC is: Model 5 
 
 # Evaluate the selected linear model on the test set
 test_predictions <- predict(linear_model5, newdata = test)
