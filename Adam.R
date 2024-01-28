@@ -96,15 +96,40 @@ summary(sales[, sapply(sales, is.numeric)])
 # Display summary for categorical variables
 sapply(sales[, !sapply(sales, is.numeric)], function(x) table(x))
 
-# Plot bar plot of Segment
-ggplot(sales, aes(x = Segment)) +
-  geom_bar(fill = "skyblue", color = "black") +
-  labs(title = "Bar Plot of Segment", x = "Segment", y = "Count") +
-  theme_minimal()
+# Define a custom color palette
+custom_palette <- c("darkred", "darkorange", "darkgreen", "darkblue")
 
-# Plot bar plot of Category
-ggplot(sales, aes(x = Category)) +
-  geom_bar(fill = "skyblue", color = "black") +
-  labs(title = "Bar Plot of Category", x = "Category", y = "Count") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# Plot the confusion matrix with custom colors
+plot(confusionMatrix_plot$table, col = custom_palette, 
+     main = "Confusion Matrix", 
+     xlab = "Predicted Segment", 
+     ylab = "Actual Segment")
+
+# Create a data frame for visualization
+chi_sq_data <- data.frame(Feature = names(chi_sq_results), p_value = chi_sq_results)
+
+# Create a scatterplot-like plot with p-values
+scatterplot_pvalue <- ggplot(chi_sq_data, aes(x = Feature, y = p_value)) +
+  geom_point(color = "blue", size = 3) +  # Set point color and size
+  labs(x = "Feature", y = "p-value", title = "Chi-Square Test Results for Feature Selection") +  # Set axis labels and title
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better visibility
+
+# Display the scatterplot-like plot
+print(scatterplot_pvalue)
+
+
+# Create a data frame for visualization
+chi_sq_data <- data.frame(Feature = names(chi_sq_results), p_value = chi_sq_results)
+
+# Sort the data frame by p-value in ascending order
+chi_sq_data <- chi_sq_data[order(chi_sq_data$p_value), ]
+
+# Create a bar plot
+chi_sq_plot <- ggplot(chi_sq_data, aes(x = reorder(Feature, p_value), y = p_value)) +
+  geom_bar(stat = "identity", fill = "skyblue") +  # Bar plot with blue bars
+  labs(x = "Feature", y = "p-value", title = "Chi-Square Test Results for Feature Selection") +  # Set axis labels and title
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x-axis labels for better visibility
+  coord_flip()  # Flip coordinates to create horizontal bars
+
+# Display the bar plot
+print(chi_sq_plot)
