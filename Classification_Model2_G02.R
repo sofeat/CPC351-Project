@@ -52,6 +52,9 @@ duplicate_rows <- sales[duplicate_indices, ] # no duplicate rows
 # Remove Row ID attribute because Order ID is already unique
 clean_sales <- sales[, !(names(sales) %in% c("Row ID"))]
 
+# Check for zero values and replace with a small non-zero value
+clean_sales[ clean_sales == 0 ] <- 0.00000001
+
 # Performing data normalisation for scale consistency
 # Using range normalization
 clean_sales$Sales <- (clean_sales$Sales - min(clean_sales$Sales)) / (max(clean_sales$Sales) - min(clean_sales$Sales))
