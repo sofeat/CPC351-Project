@@ -211,6 +211,14 @@ aictab(cand.set = models, modnames = mod.names)
 
 # Section IV: Model Evaluation ====
 
+# Run a summary for the selected model
+summary(linear_model6)
+
+# Creating a test input set based on the selected features
+test_input <- test[, c("myr_rmb", "myr_sgd", "myr_eur", "myr_twd", "myr_idr", "myr_hkd", 
+                       "myr_krw", "myr_inr", "myr_aud", "myr_php", "myr_aed", "myr_sar", 
+                       "myr_try", "myr_brl", "myr_mxn", "myr_bdt", "myr_chf", "myr_cad")]
+
 # Evaluate the selected linear model on the test set
 test_predictions <- predict(linear_model6, newdata = test)
 mse <- mean((test$myr_usd - test_predictions)^2)
