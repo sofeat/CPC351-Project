@@ -90,12 +90,6 @@ confusionMatrix_plot <- confusionMatrix(conf_matrix, reference = test_sales$Segm
 # Display the plot
 print(confusionMatrix_plot)
 
-# Display summary statistics for numerical variables
-summary(sales[, sapply(sales, is.numeric)])
-
-# Display summary for categorical variables
-sapply(sales[, !sapply(sales, is.numeric)], function(x) table(x))
-
 # Define a custom color palette
 custom_palette <- c("darkred", "darkorange", "darkgreen", "darkblue")
 
@@ -133,3 +127,4 @@ chi_sq_plot <- ggplot(chi_sq_data, aes(x = reorder(Feature, p_value), y = p_valu
 
 # Display the bar plot
 print(chi_sq_plot)
+
